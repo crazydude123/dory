@@ -96,8 +96,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     for (int a = 0; a < payload_size; a++) {
       convert << (char)buf[a];
     }
-    string keyval = convert.str();
-    string keyy = keyval.substr(0, keylength);
+    std::string keyval = convert.str();
+    std::string keyy = keyval.substr(0, keylength);
     std::hash<string> mystdhash;
     int hashindex = mystdhash(keyy) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
@@ -107,9 +107,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         kvstore[i % kvlength].value = keyval;
         break;
       }
-      cout << "\n"
-           << "Key " << i % kvlength << " committed"
-           << "\n";
+      std::cout << "\n"
+                << "Key " << i % kvlength << " committed"
+                << "\n";
     }
   });
 
