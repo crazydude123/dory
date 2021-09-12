@@ -99,7 +99,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::string keyval = convert.str();
     std::string keyy = keyval.substr(0, keylength);
     std::hash<std::string> mystdhash;
-    int hashindex = mystdhash(keyy) % kvlength;
+    int hashindex = static_cast<int>(mystdhash(keyy)) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       if (kvstore[i % kvlength].key.empty() ||
           kvstore[i % kvlength].key == keyy) {
