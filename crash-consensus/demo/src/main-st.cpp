@@ -27,9 +27,6 @@ typedef struct keyvalue {
 
 ////// Initialize KeyValueStore (kvstore) with null strings
 std::vector<kv> kvstore;
-for (int i = 0; i < kvlength; i++) {
-  kvstore.push_back({"", ""});
-}
 
 ///////////////// Native K-V Implementation: Project - ASMR
 
@@ -37,6 +34,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 
 int main(int argc, char* argv[]) {
+  for (int i = 0; i < kvlength; i++) {
+    kvstore.push_back({"", ""});
+  }
   if (argc < 4) {
     throw std::runtime_error("Provide the id of the process as argument");
   }
