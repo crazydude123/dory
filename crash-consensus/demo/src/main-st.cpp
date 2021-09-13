@@ -24,7 +24,7 @@ typedef struct keyvalue {
   std::string value;
   /* data */
 } kv;
-
+int payload_size;
 ////// Initialize KeyValueStore (kvstore) with null strings
 std::vector<kv> kvstore;
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
       throw std::runtime_error("Invalid id");
   }
 
-  int payload_size = atoi(argv[2]);
+  payload_size = atoi(argv[2]);
   std::cout << "USING PAYLOAD SIZE = " << payload_size << std::endl;
 
   int outstanding_req = atoi(argv[3]);
@@ -89,9 +89,9 @@ int main(int argc, char* argv[]) {
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([payload_size]([[maybe_unused]] bool leader,
-                                         [[maybe_unused]] uint8_t* buf,
-                                         [[maybe_unused]] size_t len) {
+  consensus.commitHandler([]([[maybe_unused]] bool leader,
+                             [[maybe_unused]] uint8_t* buf,
+                             [[maybe_unused]] size_t len) {
     std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
