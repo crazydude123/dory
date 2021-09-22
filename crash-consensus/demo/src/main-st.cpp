@@ -152,7 +152,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       if ((err = consensus.propose(&(payloads[i % 8192][0]), payload_size)) !=
           dory::ProposeError::NoError) {
         std::cout << "Proposal failed at index " << i << std::endl;
-        std::cout << payloads[i % 8192][0] << std::endl;
+        std::cout << *(&payloads[i % 8192][0]) << std::endl;
         i -= 1;
         switch (err) {
           case dory::ProposeError::FastPath:
