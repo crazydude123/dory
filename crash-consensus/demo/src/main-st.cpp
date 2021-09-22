@@ -153,7 +153,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           dory::ProposeError::NoError) {
         uint8_t* f = &(payloads[i % 8192][0]);
         std::cout << f << endl;
-        for (int n = 0; n < length; n++) {
+        for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
         }
         std::cout << "Proposal failed at index " << i << std::endl;
