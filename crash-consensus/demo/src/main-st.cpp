@@ -14,6 +14,7 @@
 #include "helpers.hpp"
 #include "timers.h"
 ///////////////// Native K-V Implementation: Project - ASMR
+#include <cstdlib>
 #include <sstream>
 int kvlength = 5000;  // size of the Key-Value Store
 int keylength = 32;   // in bytes
@@ -102,8 +103,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 
     std::hash<std::string> mystdhash;
     int hashindexx = static_cast<int>(mystdhash(keyy));
-    int hashindex = hashindexx % keylength;
-    std::cout << hashindexx << " " << hashindex << std::endl;
+    int hashindex = std::abs(hashindexx) % keylength;
+    std::cout << abs(hashindexx) << " " << hashindex << std::endl;
     /*
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       if (kvstore[i % kvlength].key.empty() ||
