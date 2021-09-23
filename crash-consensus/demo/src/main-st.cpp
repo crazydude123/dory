@@ -91,19 +91,14 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
                                           [[maybe_unused]] size_t len) {
-    std::ostringstream convert;
+    /*std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
     std::string keyval = convert.str();
     std::string keyy = keyval.substr(0, keylength);
-    // std::cout << keyval << " " << keyy << std::endl;
-
     std::hash<std::string> mystdhash;
-    int hashindex = ((static_cast<int>(mystdhash(keyy))) % kvlength);
-    hashindex = (hashindex + kvlength) % kvlength;
-    std::cout << "this is the" << " " << hashindex << std::endl;
-    /*
+    int hashindex = static_cast<int>(mystdhash(keyy)) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       if (kvstore[i % kvlength].key.empty() ||
           kvstore[i % kvlength].key == keyy) {
@@ -155,8 +150,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // std::cout << "Proposing " << i << std::endl;
       if ((err = consensus.propose(&(payloads[i % 8192][0]), payload_size)) !=
           dory::ProposeError::NoError) {
-        uint8_t* f = &(payloads[i % 8192][0]);
-        /*std::cout << f << std::endl;
+        /*uint8_t* f = &(payloads[i % 8192][0]);
+        std::cout << f << std::endl;
         for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
         }*/
