@@ -150,7 +150,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       dory::ProposeError err;
-      // std::cout << "Proposing " << i << std::endl;
+      std::cout << "Proposing " << i << std::endl;
       GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       GET_TIMESTAMP(end_latency);
@@ -162,6 +162,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           std::cout << f[n] << std::endl;
         }*/
         //std::cout << "Proposal failed at index " << i << std::endl;
+        std:cout << "Check" << std::endl;
         i -= 1;
         switch (err) {
           case dory::ProposeError::FastPath:
