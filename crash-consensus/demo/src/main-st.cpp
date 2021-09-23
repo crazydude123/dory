@@ -107,8 +107,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << hashindexx << " " << hashindex << std::endl;
 
     for (int i = hashindex; i < kvlength + hashindex; i++) {
-      std::cout << i << " " << kvstore[i % kvlength].key << std::endl;
       int j = abs(i % kvlength);
+      std::cout << i << " " << kvstore[j].key << std::endl;
       if (kvstore[j].key.empty() || kvstore[j].key == keyy) {
         kvstore[j].key = keyy;
         kvstore[j].value = keyval;
