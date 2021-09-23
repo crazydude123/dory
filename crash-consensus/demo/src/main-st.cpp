@@ -93,6 +93,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
                                           [[maybe_unused]] size_t len) {
+    std::cout << "Hi" << std::endl;
     std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
