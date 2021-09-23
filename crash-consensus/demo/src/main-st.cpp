@@ -99,7 +99,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     std::string keyval = convert.str();
     std::string keyy = keyval.substr(0, keylength);
-    // std::cout << keyval << " " << keyy << std::endl;
+    std::cout << keyval << " " << keyy << std::endl;
 
     std::hash<std::string> mystdhash;
     int hashindexx = static_cast<int>(mystdhash(keyy));
