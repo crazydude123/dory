@@ -105,7 +105,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     int hashindexx = static_cast<int>(mystdhash(keyy));
     int hashindex = hashindexx % kvlength;
     std::cout << hashindexx << " " << abs(hashindex) << std::endl;
-    /*
+    
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       if (kvstore[i % kvlength].key.empty() ||
           kvstore[i % kvlength].key == keyy) {
@@ -116,7 +116,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       std::cout << "\n"
                 << "Key " << i % kvlength << " committed"
                 << "\n";
-    } */
+    } 
   });
 
   // Wait enough time for the consensus to become ready
