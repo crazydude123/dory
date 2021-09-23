@@ -198,7 +198,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << "Replicated " << times << " commands of size " << payload_size
               << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
               << std::endl;
-    long int summ = 0;
+    long summ = 0;
     for(int i = 0; i < times; i++) {
         summ = summ + latencies[i];
     }
