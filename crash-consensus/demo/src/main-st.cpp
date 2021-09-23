@@ -162,7 +162,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           std::cout << f[n] << std::endl;
         }*/
         //std::cout << "Proposal failed at index " << i << std::endl;
-        std:cout << "Check" << std::endl;
+        std::cout << "Check" << std::endl;
         i -= 1;
         switch (err) {
           case dory::ProposeError::FastPath:
