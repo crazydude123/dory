@@ -102,13 +102,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     // std::cout << keyval << " " << keyy << std::endl;
 
     std::hash<std::string> mystdhash;
-    int hashindexx = static_cast<int>(mystdhash(keyy.substr(0, 3)));
-    int hashindex = hashindexx % keylength;
+    int hashindexx = static_cast<int>(mystdhash(keyy));
+    int hashindex = (hashindexx % keylength + keylength) % keylength;
     std::cout << hashindexx << " " << hashindex << std::endl;
 
-    for (int i = static_cast<int>(hashindex);
-         i < kvlength + static_cast<int>(hashindex); i++) {
-      int j = i % kvlength;
+    for (int i = hashindex; i < kvlength + hashindex; i++) {
+      int j = (i % kvlength + keylength) % keylength;
       std::cout << j << " " << kvstore[j].key << std::endl;
       if (kvstore[j].key.empty() || kvstore[j].key == keyy) {
         kvstore[j].key = keyy;
