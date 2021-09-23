@@ -101,8 +101,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     // std::cout << keyval << " " << keyy << std::endl;
 
     std::hash<std::string> mystdhash;
-    int hashindex = (static_cast<int>(mystdhash(keyy))) % kvlength;
-    std::cout << hashindex << std::endl;
+    int hashindex = ((static_cast<int>(mystdhash(keyy))) % kvlength);
+    std::cout << ((static_cast<int>(mystdhash(keyy))) << " " << hashindex << std::endl;
     /*
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       if (kvstore[i % kvlength].key.empty() ||
