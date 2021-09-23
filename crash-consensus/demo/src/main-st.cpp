@@ -88,28 +88,30 @@ int main(int argc, char* argv[]) {
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([]([[maybe_unused]] bool leader,
+  consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
                                           [[maybe_unused]] size_t len) {
-    /*std::ostringstream convert;
+    std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
     std::string keyval = convert.str();
     std::string keyy = keyval.substr(0, keylength);
     std::hash<std::string> mystdhash;
-    int hashindex = static_cast<int>(mystdhash(keyy)) % kvlength;
+    int hashindexx = static_cast<int>(mystdhash(keyy)) % kvlength;
+    int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
-      if (kvstore[i % kvlength].key.empty() ||
-          kvstore[i % kvlength].key == keyy) {
-        kvstore[i % kvlength].key = keyy;
-        kvstore[i % kvlength].value = keyval;
+      int j = i % kvlength;
+      if (kvstore[j].key.empty() ||
+          kvstore[j].key == keyy) {
+        kvstore[j].key = keyy;
+        kvstore[j].value = keyval;
         break;
       }
       std::cout << "\n"
                 << "Key " << i % kvlength << " committed"
                 << "\n";
-    } */
+    } 
   });
 
   // Wait enough time for the consensus to become ready
@@ -155,7 +157,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
         }*/
-        std::cout << "Proposal failed at index " << i << std::endl;
+        //std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
         switch (err) {
           case dory::ProposeError::FastPath:
