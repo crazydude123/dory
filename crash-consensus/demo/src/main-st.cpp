@@ -202,32 +202,3 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     exit(0);
   }
 }
-<< std::endl;
-
-exit(0);
-}
-<< std::endl;
-
-exit(0);
-exit(0);
-}
-<< std::endl;
-
-exit(0);
-exit(0);
-}
-<< std::endl;
-
-exit(0);
-exit(0);
-}
-<< std::endl;
-
-exit(0);
-}
-exit(0);
-}
-<< std::endl;
-
-exit(0);
-}
