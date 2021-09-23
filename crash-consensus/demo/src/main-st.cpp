@@ -13,7 +13,6 @@
 #include "helpers.hpp"
 #include "timers.h"
 ///////////////// Native K-V Implementation: Project - ASMR
-#include <cstdlib>
 #include <sstream>
 int kvlength = 5000;  // size of the Key-Value Store
 int keylength = 32;   // in bytes
@@ -92,7 +91,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
                                           [[maybe_unused]] size_t len) {
-    /*std::ostringstream convert;
+    std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
@@ -101,16 +100,14 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     // std::cout << keyval << " " << keyy << std::endl;
 
     std::hash<std::string> mystdhash;
-    int hashindexx = static_cast<int>(mystdhash(keyy));
-    int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
-    std::cout << hashindexx << " " << hashindex << std::endl;
-    
+    int hashindex = ((static_cast<int>(mystdhash(keyy))) % kvlength);
+    std::cout << ((static_cast<int>(mystdhash(keyy))) << " " << hashindex << std::endl;
+    /*
     for (int i = hashindex; i < kvlength + hashindex; i++) {
-      int j = (i % kvlength + kvlength) % kvlength; 
-      if (kvstore[j].key.empty() ||
-          kvstore[j].key == keyy) {
-        kvstore[j].key = keyy;
-        kvstore[j].value = keyval;
+      if (kvstore[i % kvlength].key.empty() ||
+          kvstore[i % kvlength].key == keyy) {
+        kvstore[i % kvlength].key = keyy;
+        kvstore[i % kvlength].value = keyval;
         break;
       }
       std::cout << "\n"
@@ -158,10 +155,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       if ((err = consensus.propose(&(payloads[i % 8192][0]), payload_size)) !=
           dory::ProposeError::NoError) {
         uint8_t* f = &(payloads[i % 8192][0]);
-        /*std::cout << f << std::endl;
+        std::cout << f << std::endl;
         for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
-        }*/
+        }
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
         switch (err) {
