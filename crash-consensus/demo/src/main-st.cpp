@@ -87,6 +87,7 @@ int main(int argc, char* argv[]) {
 
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
+  long int latencies[times];
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
@@ -143,15 +144,18 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << "Started" << std::endl;
 
     TIMESTAMP_T start_meas, end_meas;
-
+    TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
     for (int i = 0; i < times; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
-      if ((err = consensus.propose(&(payloads[i % 8192][0]), payload_size)) !=
-          dory::ProposeError::NoError) {
+      GET_TIMESTAMP(start_latency);
+      err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
+      GET_TIMESTAMP(end_latency);
+      latencies[i] = ELAPSED_NSEC(start_latency, end_latency);
+      if (err != dory::ProposeError::NoError) {
         /*uint8_t* f = &(payloads[i % 8192][0]);
         std::cout << f << std::endl;
         for (int n = 0; n < 8192; n++) {
@@ -194,6 +198,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << "Replicated " << times << " commands of size " << payload_size
               << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
               << std::endl;
+    long int summ = 0;
+    for(int i = 0; i < times; i++) {
+        summ = summ + latencies[i];
+    }
+    summ = summ/times;
+    std::cout << "Average Commit Latency is " << summ << " ns" << std::endl;
 
     exit(0);
   }
