@@ -102,7 +102,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     // std::cout << keyval << " " << keyy << std::endl;
 
     std::hash<std::string> mystdhash;
-    int hashindexx = static_cast<int>(mystdhash(keyy));
+    int hashindexx = abs(static_cast<int>(mystdhash(keyy)));
     unsigned int hashindex = static_cast<unsigned int>(hashindexx % kvlength);
     std::cout << hashindexx << " " << hashindex << std::endl;
 
