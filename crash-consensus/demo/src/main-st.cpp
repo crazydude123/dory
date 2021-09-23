@@ -113,7 +113,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         kvstore[i % kvlength].value = keyval;
         break;
       }
-      std::cout << "Key: " << i % kvlength << " committed" << std::endl;
+      std::cout << "Key: " << i << " committed" << std::endl;
     }
   });
 
@@ -203,6 +203,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 }
 << std::endl;
 
+exit(0);
+}
+<< std::endl;
+
+exit(0);
 exit(0);
 }
 << std::endl;
