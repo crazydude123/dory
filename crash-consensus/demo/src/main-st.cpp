@@ -159,8 +159,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // std::cout << "Proposing " << i << std::endl;
       if ((err = consensus.propose(&(payloads[i % 8192][0]), payload_size)) !=
           dory::ProposeError::NoError) {
-        uint8_t* f = &(payloads[i % 8192][0]);
-        /*std::cout << f << std::endl;
+        /*uint8_t* f = &(payloads[i % 8192][0]);
+        std::cout << f << std::endl;
         for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
         }*/
