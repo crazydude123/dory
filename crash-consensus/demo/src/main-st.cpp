@@ -1,4 +1,3 @@
-
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -93,32 +92,30 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
                                           [[maybe_unused]] size_t len) {
-    /*std::cout << "Hi" << std::endl;
     std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
     std::string keyval = convert.str();
     std::string keyy = keyval.substr(0, keylength);
-    std::cout << keyval << " " << keyy << std::endl;
+    // std::cout << keyval << " " << keyy << std::endl;
 
-    
     std::hash<std::string> mystdhash;
     int hashindexx = static_cast<int>(mystdhash(keyy));
-    int hashindex = (hashindexx % keylength + keylength) % keylength;
-    std::cout << hashindexx << " " << hashindex << std::endl;
-
+    int hashindex = hashindexx % kvlength;
+    std::cout << hashindexx << " " << abs(hashindex) << std::endl;
+    
     for (int i = hashindex; i < kvlength + hashindex; i++) {
-      int j = (i % kvlength + keylength) % keylength;
-      std::cout << j << " " << kvstore[j].key << std::endl;
-      if (kvstore[j].key.empty() || kvstore[j].key == keyy) {
-        kvstore[j].key = keyy;
-        kvstore[j].value = keyval;
+      if (kvstore[i % kvlength].key.empty() ||
+          kvstore[i % kvlength].key == keyy) {
+        kvstore[i % kvlength].key = keyy;
+        kvstore[i % kvlength].value = keyval;
         break;
       }
-      std::cout << "Key:" << j << " "
-                << "committed" << std::endl;
-    }*/
+      std::cout << "\n"
+                << "Key " << i % kvlength << " committed"
+                << "\n";
+    } 
   });
 
   // Wait enough time for the consensus to become ready
@@ -159,11 +156,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // std::cout << "Proposing " << i << std::endl;
       if ((err = consensus.propose(&(payloads[i % 8192][0]), payload_size)) !=
           dory::ProposeError::NoError) {
-        /*uint8_t* f = &(payloads[i % 8192][0]);
+        uint8_t* f = &(payloads[i % 8192][0]);
         std::cout << f << std::endl;
         for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
-        }*/
+        }
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
         switch (err) {
