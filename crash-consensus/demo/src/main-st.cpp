@@ -75,6 +75,7 @@ int main(int argc, char* argv[]) {
 
   const int times =
       static_cast<int>(1.5 * 1024) * 1024 * 1024 / (payload_size + 64);
+  long int *latencies = new long int(times);
   benchmark(id, remote_ids, times, payload_size, outstanding_req,
             dory::ThreadBank::A);
 
@@ -87,7 +88,6 @@ int main(int argc, char* argv[]) {
 
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
-  long int *latencies = new long int(times);
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
