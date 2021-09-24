@@ -150,12 +150,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       dory::ProposeError err;
-      std::cout << "Proposing " << i << std::endl;
+      //std::cout << "Proposing " << i << std::endl;
       GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       GET_TIMESTAMP(end_latency);
       latencies.push_back(static_cast<unsigned long>(ELAPSED_NSEC(start_latency, end_latency)));
-      std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
+      //std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
       if (err != dory::ProposeError::NoError) {
         /*uint8_t* f = &(payloads[i % 8192][0]);
         std::cout << f << std::endl;
