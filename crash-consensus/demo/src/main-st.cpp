@@ -14,7 +14,7 @@
 #include "timers.h"
 ///////////////// Native K-V Implementation: Project - ASMR
 #include <sstream>
-int kvlength = 5000;  // size of the Key-Value Store
+int kvlength = 5000000;  // size of the Key-Value Store
 int keylength = 32;   // in bytes
 
 ///////////////// Native K-V Implementation: Project - ASMR
