@@ -202,7 +202,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
               << std::endl;
     long summ = 0;
     for(auto i = latencies.begin(); i != latencies.end(); ++i) {
-        summ = summ *i;
+        summ = *i + summ;
     }
     summ = summ/times;
     std::cout << "Average Commit Latency is " << summ << " ns" << std::endl;
