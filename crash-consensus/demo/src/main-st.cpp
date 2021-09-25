@@ -207,8 +207,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
               std::to_string(outstanding_req) + ".txt");
     auto j = latencies_end.begin();
     for(auto i = latencies_start.begin(); i != latencies_start.end(); ++i) {
-      dump << ELAPSED_NSEC(*i, *j) << "\n";
-      j++;
+      dump << ELAPSED_NSEC(latencies_start[i], latencies_end[j]) << "\n";
+      ++j;
     }
     dump.close();
     // long summ = 0;
