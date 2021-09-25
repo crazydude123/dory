@@ -87,8 +87,8 @@ int main(int argc, char* argv[]) {
 
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
-  std::vector<long> latencies_start;
-  std::vector<long> latencies_end;
+  std::vector<TIMESTAMP_T> latencies_start;
+  std::vector<TIMESTAMP_T> latencies_end;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
                                           [[maybe_unused]] uint8_t* buf,
@@ -155,8 +155,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       GET_TIMESTAMP(end_latency);
-      latencies_start.push_back(static_cast<unsigned long>(start_latency));
-      latencies_end.push_back(static_cast<unsigned long>(end_latency));
+      latencies_start.push_back((start_latency));
+      latencies_end.push_back((end_latency));
       //std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
       if (err != dory::ProposeError::NoError) {
         /*uint8_t* f = &(payloads[i % 8192][0]);
