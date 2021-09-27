@@ -95,7 +95,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                               [[maybe_unused]] bool leader,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
-    /*std::ostringstream convert;
+    std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
@@ -106,16 +106,15 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
-      if (kvstore[j].key.empty() ||
-          kvstore[j].key == keyy) {
+      if (kvstore[j].key.empty() || kvstore[j].key == keyy) {
         kvstore[j].key = keyy;
         kvstore[j].value = keyval;
-        ***8*std::cout << "\n"
+        /*std::cout << "\n"
                 << "Key " << i % kvlength << " committed"
-                << "\n"; 00**ss
+                << "\n"; */
         break;
       }
-    } */
+    }
     GET_TIMESTAMP(end_latency);
   });
 
