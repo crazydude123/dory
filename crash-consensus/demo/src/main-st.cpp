@@ -89,10 +89,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start;
   std::vector<TIMESTAMP_T> latencies_end;
+  TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([&payload_size]([[maybe_unused]] bool leader,
-                                          [[maybe_unused]] uint8_t* buf,
-                                          [[maybe_unused]] size_t len) {
+  consensus.commitHandler([&payload_size, &end_latency, &latencies_end](
+                              [[maybe_unused]] bool leader,
+                              [[maybe_unused]] uint8_t* buf,
+                              [[maybe_unused]] size_t len) {
     /*std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
@@ -114,6 +116,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     } */
+    GET_TIMESTAMP(end_latency);
   });
 
   // Wait enough time for the consensus to become ready
@@ -145,7 +148,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << "Started" << std::endl;
 
     TIMESTAMP_T start_meas, end_meas;
-    TIMESTAMP_T start_latency, end_latency;
+    // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
     for (int i = 0; i < times; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
@@ -154,7 +157,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // std::cout << "Proposing " << i << std::endl;
       GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
-      GET_TIMESTAMP(end_latency);
+      ////GET_TIMESTAMP(end_latency);
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
       // std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
