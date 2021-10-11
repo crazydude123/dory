@@ -91,16 +91,18 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   std::vector<TIMESTAMP_T> latencies_end;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([&payload_size, &end_latency, &latencies_end](
+  consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &end_latency](
                               [[maybe_unused]] bool leader,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
+    GET_TIMESTAMP(start_latency);
     std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
     std::string keyval = convert.str();
     std::string keyy = keyval.substr(0, keylength);
+    GET_TIMESTAMP(end_latency);
     std::hash<std::string> mystdhash;
     int hashindexx = static_cast<int>(mystdhash(keyy)) % kvlength;
     int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
@@ -115,7 +117,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     }
-    GET_TIMESTAMP(end_latency);
+    //GET_TIMESTAMP(end_latency);
   });
 
   // Wait enough time for the consensus to become ready
@@ -154,7 +156,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // Encode process doing the proposal
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
-      GET_TIMESTAMP(start_latency);
+      //GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       ////GET_TIMESTAMP(end_latency);
       latencies_start.push_back((start_latency));
