@@ -95,14 +95,15 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                               [[maybe_unused]] bool leader,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
-    GET_TIMESTAMP(start_latency);
+    //GET_TIMESTAMP(start_latency);
     std::ostringstream convert;
     for (int a = 0; a < payload_size; a++) {
       convert << static_cast<char>(buf[a]);
     }
-    std::string keyval = convert.str();
+    std::string keyvall = convert.str();
+    GET_TIMESTAMP(start_latency);
+    std::string keyval = keyvall;
     std::string keyy = keyval.substr(0, keylength);
-    GET_TIMESTAMP(end_latency);
     std::hash<std::string> mystdhash;
     int hashindexx = static_cast<int>(mystdhash(keyy)) % kvlength;
     int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
@@ -117,7 +118,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     }
-    //GET_TIMESTAMP(end_latency);
+    GET_TIMESTAMP(end_latency);
   });
 
   // Wait enough time for the consensus to become ready
