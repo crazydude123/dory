@@ -14,13 +14,14 @@
 #include "timers.h"
 ///////////////// Native K-V Implementation: Project - ASMR
 #include <sstream>
+#include <cstring>
 int kvlength = 5000000;  // size of the Key-Value Store
 int keylength = 32;      // in bytes
 
 ///////////////// Native K-V Implementation: Project - ASMR
 typedef struct keyvalue {
-  std::string key;
-  std::string value;
+  char* key;
+  char* value;
   /* data */
 } kv;
 int payload_size;
@@ -33,8 +34,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 
 int main(int argc, char* argv[]) {
+  char aaa[]="0";
   for (int i = 0; i < kvlength; i++) {
-    kvstore.push_back({"", ""});
+    kvstore.push_back({aaa, aaa});
   }
   if (argc < 4) {
     throw std::runtime_error("Provide the id of the process as argument");
@@ -96,15 +98,20 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
     //GET_TIMESTAMP(start_latency);
-    std::ostringstream convert;
-    for (int a = 0; a < payload_size; a++) {
-      convert << static_cast<char>(buf[a]);
-    }
-    std::string keyvall = convert.str();
+    //std::ostringstream convert;
+    //for (int a = 0; a < payload_size; a++) {
+      //convert << static_cast<char>(buf[a]);
+    //}
+    //std::string keyvall = convert.str();
     GET_TIMESTAMP(start_latency);
-    std::string keyval = keyvall;
-    std::string keyy = keyval.substr(0, keylength);
-    std::hash<std::string> mystdhash;
+    char* keyval = (char*)buf;
+    char keyy[] = "Eight";
+    strncpy (keyy, keyval, keylength); 
+    //GET_TIMESTAMP(start_latency);
+    //std::string keyval = keyvall;
+    //std::string keyy = keyval.substr(0, keylength);
+    //std::hash<std::string> mystdhash;
+    std::hash<std::char*> mystdhash;
     int hashindexx = static_cast<int>(mystdhash(keyy)) % kvlength;
     int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
