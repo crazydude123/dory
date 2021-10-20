@@ -30,6 +30,11 @@ std::vector<kv> kvstore;
 
 ///////////////// Native K-V Implementation: Project - ASMR
 
+
+
+int hasho(char* h, int size);
+void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
+               int outstanding_req, dory::ThreadBank threadBank);
 /// Own hash function ofc
 int hasho(char* h, int size){
     int sum=0;
@@ -38,10 +43,6 @@ int hasho(char* h, int size){
     }
     return sum;
 }
-
-int hasho(char* h, int size);
-void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
-               int outstanding_req, dory::ThreadBank threadBank);
 
 int main(int argc, char* argv[]) {
   for (int i = 0; i < kvlength; i++) {
@@ -113,7 +114,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //}
     //std::string keyvall = convert.str();
     GET_TIMESTAMP(start_latency);
-    char* keyval = static_cast<char*>buf;
+    char* keyval = static_cast<char*>(buf);
     char keyy[] = "Eight";
     strncpy (keyy, keyval, keylength); 
     //GET_TIMESTAMP(start_latency);
