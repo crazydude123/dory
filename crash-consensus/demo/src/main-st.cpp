@@ -30,6 +30,15 @@ std::vector<kv> kvstore;
 
 ///////////////// Native K-V Implementation: Project - ASMR
 
+/// Own hash function ofc
+int hasho(char* h, int size){
+    int sum=0;
+    for(int i =0; i<size; i++){
+        sum= sum + h[i];
+    }
+    return sum;
+}
+
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 
@@ -104,16 +113,15 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //}
     //std::string keyvall = convert.str();
     GET_TIMESTAMP(start_latency);
-    char* keyval = (char*)buf;
+    char* keyval = static_cast<char*>buf;
     char keyy[] = "Eight";
     strncpy (keyy, keyval, keylength); 
     //GET_TIMESTAMP(start_latency);
     //std::string keyval = keyvall;
     //std::string keyy = keyval.substr(0, keylength);
     //std::hash<std::string> mystdhash;
-    std::hash<std::char*> mystdhash;
-    int hashindexx = static_cast<int>(mystdhash(keyy)) % kvlength;
-    int hashindex = (hashindexx % kvlength + kvlength) % kvlength;
+    //int hashindexx = hasho(keyy) % kvlength;
+    int hashindex = (hasho(keyy) % kvlength + kvlength) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if (kvstore[j].key.empty() || kvstore[j].key == keyy) {
