@@ -114,7 +114,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //}
     //std::string keyvall = convert.str();
     GET_TIMESTAMP(start_latency);
-    char* keyval = dynamic_cast<char*>(buf);
+    char* keyval = (char*)(buf);
     char keyy[] = "Eight";
     strncpy (keyy, keyval, keylength); 
     //GET_TIMESTAMP(start_latency);

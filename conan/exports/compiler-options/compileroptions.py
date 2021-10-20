@@ -99,7 +99,7 @@ options = {
     },
     "GENERAL": [
         # Make all warnings into errors
-        "-Werror",
+        # "-Werror",
         # Turns on the above mentioned flags
         "-Wall",
         # Warn about implicit conversions
@@ -193,7 +193,8 @@ def get_cxx_options_for(target, build_type):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawTextHelpFormatter)
 
     build_type_choices = ["debug", "release", "relwithdebinfo", "minsizerel"]
 
@@ -221,7 +222,8 @@ if __name__ == "__main__":
         help="Type of the compiler",
     )
 
-    descr = "Possible choice of <group>:\n{}".format("\n".join(compiler_flags_groups))
+    descr = "Possible choice of <group>:\n{}".format(
+        "\n".join(compiler_flags_groups))
 
     parser.add_argument(
         "-o",
@@ -239,9 +241,11 @@ if __name__ == "__main__":
     if results.output == "CMAKE_EXE_LINKER_FLAGS":
         print(options["TARGET"][compiler]["LINKER"], end='')
     elif results.output == "CMAKE_C_FLAGS":
-        print(" ".join(options["GENERAL"] + options["LANG"]["C"] + options["TARGET"][compiler]["C"]), end='')
+        print(" ".join(options["GENERAL"] + options["LANG"]
+                       ["C"] + options["TARGET"][compiler]["C"]), end='')
     elif results.output == "CMAKE_CXX_FLAGS":
-        print(" ".join(options["GENERAL"] + options["LANG"]["CXX"] + options["TARGET"][compiler]["CXX"]), end='')
+        print(" ".join(options["GENERAL"] + options["LANG"]
+                       ["CXX"] + options["TARGET"][compiler]["CXX"]), end='')
     else:
         build_type = results.output.rpartition('_')[-1]
         print(" ".join(options["BUILD_TYPE"][build_type]), end='')
