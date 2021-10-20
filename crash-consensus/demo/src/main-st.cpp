@@ -45,6 +45,7 @@ int hasho(char* h, int size){
 }
 
 int main(int argc, char* argv[]) {
+  std::cout << "Am I here?" << std::endl;
   for (int i = 0; i < kvlength; i++) {
     kvstore.push_back({aaa, aaa});
   }
