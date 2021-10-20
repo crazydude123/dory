@@ -39,6 +39,7 @@ int hasho(char* h, int size){
     return sum;
 }
 
+int hasho(char* h, int size);
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 
@@ -120,7 +121,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //std::string keyy = keyval.substr(0, keylength);
     //std::hash<std::string> mystdhash;
     //int hashindexx = hasho(keyy) % kvlength;
-    int hashindex = (hasho(keyy) % kvlength + kvlength) % kvlength;
+    int hashindex = (hasho(keyy, kvlength) % kvlength + kvlength) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if ((strcmp(kvstore[j].key, aaa) == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
