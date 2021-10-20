@@ -17,7 +17,7 @@
 #include <cstring>
 int kvlength = 5000000;  // size of the Key-Value Store
 int keylength = 32;      // in bytes
-
+char aaa[]="0";          // init k-v store
 ///////////////// Native K-V Implementation: Project - ASMR
 typedef struct keyvalue {
   char* key;
@@ -43,7 +43,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 
 int main(int argc, char* argv[]) {
-  char aaa[]="0";
   for (int i = 0; i < kvlength; i++) {
     kvstore.push_back({aaa, aaa});
   }
@@ -124,7 +123,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     int hashindex = (hasho(keyy) % kvlength + kvlength) % kvlength;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
-      if (kvstore[j].key.empty() || kvstore[j].key == keyy) {
+      if ((strcmp(kvstore[j].key, aaa) == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
         kvstore[j].key = keyy;
         kvstore[j].value = keyval;
         /*std::cout << "\n"
