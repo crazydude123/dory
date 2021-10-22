@@ -102,6 +102,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start;
   std::vector<TIMESTAMP_T> latencies_end;
+  std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start](
@@ -114,6 +115,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       //convert << static_cast<char>(buf[a]);
     //}
     //std::string keyvall = convert.str();
+    std::cout << "Am I inside Commit Handler" << std::endl;
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[] = "Eight";
