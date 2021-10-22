@@ -123,7 +123,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //std::string keyy = keyval.substr(0, keylength);
     //std::hash<std::string> mystdhash;
     //int hashindexx = hasho(keyy) % kvlength;
-    int hashindex = (hasho(keyy, kvlength) % kvlength + kvlength) % kvlength;
+    int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
     std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
