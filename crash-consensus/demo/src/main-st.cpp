@@ -15,7 +15,7 @@
 ///////////////// Native K-V Implementation: Project - ASMR
 #include <sstream>
 #include <cstring>
-int kvlength = 5000000;  // size of the Key-Value Store
+int kvlength = 5000;  // size of the Key-Value Store
 int keylength = 32;      // in bytes
 char aaa[]="0";          // init k-v store
 ///////////////// Native K-V Implementation: Project - ASMR
