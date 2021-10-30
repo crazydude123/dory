@@ -106,7 +106,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start, &kvstore](
+  consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start, &kvstore, &hasho](
                               [[maybe_unused]] bool leader,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
