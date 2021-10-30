@@ -38,11 +38,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 /// Own hash function ofc
 int hasho(char* h, int size){
     int sum=0;
-    for(int i =0; i<size; i++){
+    for(int i =0; i<2*size; i++){
         sum= sum + h[i];
     }
-    std::cout << "Hasho" << sum << std::endl;
-    return sum/100;
+    //std::cout << "Hasho" << sum << std::endl;
+    return sum;
 }
 
 int main(int argc, char* argv[]) {
@@ -103,7 +103,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start;
   std::vector<TIMESTAMP_T> latencies_end;
-  std::cout << "Am I here inside benchmark?" << std::endl;
+  //std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start, &kvstore](
@@ -119,7 +119,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //std::cout << "Am I inside Commit Handler" << std::endl;
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
-    std::cout << keyval << std::endl;
+    //std::cout << keyval << std::endl;
     char keyy[keylength] = "Eight";
     //std::cout << "Am I inside Commit Handler-1.2" << std::endl;
     strncpy (keyy, keyval, keylength);
@@ -145,7 +145,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     }
-    std::cout << "Am I inside Commit Handler-3" << std::endl;
+    //std::cout << "Am I inside Commit Handler-3" << std::endl;
     GET_TIMESTAMP(end_latency);
   });
 
