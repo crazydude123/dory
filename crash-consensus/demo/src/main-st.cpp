@@ -106,7 +106,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start, &kvstore, &hasho](
+  consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start, &kvstore](
                               [[maybe_unused]] bool leader,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
@@ -126,6 +126,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     //std::string keyy = keyval.substr(0, keylength);
     //std::hash<std::string> mystdhash;
     //int hashindexx = hasho(keyy) % kvlength;
+    std::cout << "Am I inside Commit Handler-1.5" << std::endl;
     int hashindex = (hasho(keyy, keylength/4) % kvlength + kvlength) % kvlength;
     std::cout << hashindex << std::endl;
     std::cout << "Am I inside Commit Handler-2" << std::endl;
