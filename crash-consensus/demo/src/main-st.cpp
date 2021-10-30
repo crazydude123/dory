@@ -120,7 +120,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     std::cout << keyval << std::endl;
-    char keyy[] = "Eight";
+    char keyy[keylength] = "Eight";
     std::cout << "Am I inside Commit Handler-1.2" << std::endl;
     strncpy (keyy, keyval, keylength);
     std::cout << "Am I inside Commit Handler-1.3" << std::endl;
