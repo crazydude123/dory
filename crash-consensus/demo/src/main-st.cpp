@@ -41,6 +41,7 @@ int hasho(char* h, int size){
     for(int i =0; i<size; i++){
         sum= sum + h[i];
     }
+    std::cout << "Hasho" << sum << std:endl;
     return sum/100;
 }
 
