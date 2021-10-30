@@ -120,7 +120,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[] = "Eight";
-    strncpy (keyy, keyval, keylength); 
+    strncpy (keyy, keyval, keylength);
+    keyy[keylength-1] = '\0';
     //GET_TIMESTAMP(start_latency);
     //std::string keyval = keyvall;
     //std::string keyy = keyval.substr(0, keylength);
