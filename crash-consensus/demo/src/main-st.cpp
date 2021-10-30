@@ -15,7 +15,7 @@
 ///////////////// Native K-V Implementation: Project - ASMR
 #include <sstream>
 #include <cstring>
-int kvlength = 5000;  // size of the Key-Value Store
+int kvlength = 500000;  // size of the Key-Value Store
 int keylength = 32;      // in bytes
 char aaa[]="0";          // init k-v store
 ///////////////// Native K-V Implementation: Project - ASMR
@@ -39,7 +39,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 int hasho(char* h, int size){
     int sum=0; 
     for(int i =0; i<size; i++){
-        sum= sum * 537 + h[i];
+        sum= sum * 537 + h[i] + kvlength;
     }
     //std::cout << "Hasho" << sum << std::endl;
     return (sum & 0x7FFFFFFF);
@@ -110,30 +110,13 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                               [[maybe_unused]] bool leader,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
-    //GET_TIMESTAMP(start_latency);
-    //std::ostringstream convert;
-    //for (int a = 0; a < payload_size; a++) {
-      //convert << static_cast<char>(buf[a]);
-    //}
-    //std::string keyvall = convert.str();
-    //std::cout << "Am I inside Commit Handler" << std::endl;
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
-    //std::cout << keyval << std::endl;
     char keyy[keylength] = "Eight";
-    //std::cout << "Am I inside Commit Handler-1.2" << std::endl;
     strncpy (keyy, keyval, keylength);
-    //std::cout << "Am I inside Commit Handler-1.3" << std::endl;
     keyy[keylength-1] = '\0';
-    //GET_TIMESTAMP(start_latency);
-    //std::string keyval = keyvall;
-    //std::string keyy = keyval.substr(0, keylength);
-    //std::hash<std::string> mystdhash;
-    //int hashindexx = hasho(keyy) % kvlength;
-    //std::cout << "Am I inside Commit Handler-1.5" << std::endl;
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
     std::cout << hashindex << std::endl;
-    //std::cout << "Am I inside Commit Handler-2" << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if ((strcmp(kvstore[j].key, aaa) == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
@@ -145,7 +128,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     }
-    //std::cout << "Am I inside Commit Handler-3" << std::endl;
     GET_TIMESTAMP(end_latency);
   });
 
