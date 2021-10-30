@@ -116,24 +116,24 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       //convert << static_cast<char>(buf[a]);
     //}
     //std::string keyvall = convert.str();
-    std::cout << "Am I inside Commit Handler" << std::endl;
+    //std::cout << "Am I inside Commit Handler" << std::endl;
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     std::cout << keyval << std::endl;
     char keyy[keylength] = "Eight";
-    std::cout << "Am I inside Commit Handler-1.2" << std::endl;
+    //std::cout << "Am I inside Commit Handler-1.2" << std::endl;
     strncpy (keyy, keyval, keylength);
-    std::cout << "Am I inside Commit Handler-1.3" << std::endl;
+    //std::cout << "Am I inside Commit Handler-1.3" << std::endl;
     keyy[keylength-1] = '\0';
     //GET_TIMESTAMP(start_latency);
     //std::string keyval = keyvall;
     //std::string keyy = keyval.substr(0, keylength);
     //std::hash<std::string> mystdhash;
     //int hashindexx = hasho(keyy) % kvlength;
-    std::cout << "Am I inside Commit Handler-1.5" << std::endl;
-    int hashindex = (hasho(keyy, keylength/4) % kvlength + kvlength) % kvlength;
+    //std::cout << "Am I inside Commit Handler-1.5" << std::endl;
+    int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
     std::cout << hashindex << std::endl;
-    std::cout << "Am I inside Commit Handler-2" << std::endl;
+    //std::cout << "Am I inside Commit Handler-2" << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if ((strcmp(kvstore[j].key, aaa) == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
