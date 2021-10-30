@@ -37,12 +37,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 /// Own hash function ofc
 int hasho(char* h, int size){
-    int sum=0;
+    int sum=0; 
     for(int i =0; i<size; i++){
-        sum= sum + h[i];
+        sum= sum * 537 + h[i];
     }
     //std::cout << "Hasho" << sum << std::endl;
-    return sum;
+    return (sum & 0x7FFFFFFF);
 }
 
 int main(int argc, char* argv[]) {
