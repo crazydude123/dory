@@ -111,7 +111,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                               [[maybe_unused]] uint8_t* buf,
                               [[maybe_unused]] size_t len) {
     
-    GET_TIMESTAMP(start_latency);
+    
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
     //strncpy (keyy, keyval, keylength);
@@ -119,9 +119,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       keyy[k] = keyval[k];
     }
     keyy[keylength-1] = '\0';
-    
+    GET_TIMESTAMP(start_latency);
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
-    
+    GET_TIMESTAMP(end_latency);
     std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
@@ -134,7 +134,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     }
-    GET_TIMESTAMP(end_latency);
+    
   });
 
   // Wait enough time for the consensus to become ready
