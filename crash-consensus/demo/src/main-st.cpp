@@ -46,7 +46,7 @@ int hasho(char* h, int size){
 }
 
 int main(int argc, char* argv[]) {
-  std::cout << "Am I here?" << std::endl;
+  //std::cout << "Am I here?" << std::endl;
   for (int i = 0; i < kvlength; i++) {
     kvstore.push_back({aaa, aaa});
   }
@@ -113,7 +113,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
-    strncpy (keyy, keyval, keylength);
+    //strncpy (keyy, keyval, keylength);
+    for (int k=0; k<keylength; k++){
+      keyy[k] = keyval[k];
+    }
     keyy[keylength-1] = '\0';
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
     std::cout << hashindex << std::endl;
