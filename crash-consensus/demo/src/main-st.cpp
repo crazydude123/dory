@@ -39,7 +39,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 int hasho(char* h, int size){
     int sum=0; 
     for(int i =0; i<size; i++){
-        sum= sum * 537 + h[i] + kvlength;
+        sum= sum * kvlength + h[i];
     }
     //std::cout << "Hasho" << sum << std::endl;
     return (sum & 0x7FFFFFFF);
