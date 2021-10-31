@@ -48,7 +48,7 @@ int hasho(char* h, int size){
 int main(int argc, char* argv[]) {
   //std::cout << "Am I here?" << std::endl;
   for (int i = 0; i < kvlength; i++) {
-    kvstore.push_back({aaa, aaa});
+    kvstore.push_back({"\0", "\0"});
   }
   if (argc < 4) {
     throw std::runtime_error("Provide the id of the process as argument");
@@ -122,7 +122,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
-      if ((strcmp(kvstore[j].key, aaa) == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
+      if ((strcmp(kvstore[j].key, "\0") == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
         kvstore[j].key = keyy;
         kvstore[j].value = keyval;
         /*std::cout << "\n"
