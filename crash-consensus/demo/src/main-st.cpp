@@ -119,9 +119,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       keyy[k] = keyval[k];
     }
     keyy[keylength-1] = '\0';
-    GET_TIMESTAMP(start_latency);
+    //GET_TIMESTAMP(start_latency);
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
-    GET_TIMESTAMP(end_latency);
+    //GET_TIMESTAMP(end_latency);
     std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
@@ -173,10 +173,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // Encode process doing the proposal
       dory::ProposeError err;
       //std::cout << "Proposing " << i << std::endl;
-      //GET_TIMESTAMP(start_latency);
+      GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       //std::cout << "Oh boy" << std::endl;
-      ////GET_TIMESTAMP(end_latency);
+      GET_TIMESTAMP(end_latency);
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
       // std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
