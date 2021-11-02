@@ -13,11 +13,11 @@
 #include "helpers.hpp"
 #include "timers.h"
 ///////////////// Native K-V Implementation: Project - ASMR
-#include <sstream>
 #include <cstring>
+#include <sstream>
 int kvlength = 500000;  // size of the Key-Value Store
-int keylength = 32;      // in bytes
-char aaa[]="0";          // init k-v store
+int keylength = 32;     // in bytes
+char aaa[] = "0";       // init k-v store
 ///////////////// Native K-V Implementation: Project - ASMR
 typedef struct keyvalue {
   char* key;
@@ -30,23 +30,21 @@ std::vector<kv> kvstore;
 
 ///////////////// Native K-V Implementation: Project - ASMR
 
-
-
 int hasho(char* h, int size);
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank);
 /// Own hash function ofc
-int hasho(char* h, int size){
-    int sum=0; 
-    for(int i =0; i<size; i++){
-        sum= sum * kvlength + h[i];
-    }
-    //std::cout << "Hasho" << sum << std::endl;
-    return (sum & 0x7FFFFFFF);
+int hasho(char* h, int size) {
+  int sum = 0;
+  for (int i = 0; i < size; i++) {
+    sum = sum * kvlength + h[i];
+  }
+  // std::cout << "Hasho" << sum << std::endl;
+  return (sum & 0x7FFFFFFF);
 }
 
 int main(int argc, char* argv[]) {
-  //std::cout << "Am I here?" << std::endl;
+  // std::cout << "Am I here?" << std::endl;
   for (int i = 0; i < kvlength; i++) {
     kvstore.push_back({"\0", "\0"});
   }
@@ -103,15 +101,16 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start;
   std::vector<TIMESTAMP_T> latencies_end;
-  //std::cout << "Am I here inside benchmark?" << std::endl;
+  // std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
-  consensus.commitHandler([&payload_size, &end_latency, &latencies_end, &start_latency, &latencies_start, &kvstore](
-                              [[maybe_unused]] bool leader,
-                              [[maybe_unused]] uint8_t* buf,
-                              [[maybe_unused]] size_t len) {
-    
-    
+  consensus.commitHandler([&payload_size, &end_latency, &latencies_end,
+                           &start_latency, &latencies_start,
+                           &kvstore]([[maybe_unused]] bool leader,
+                                     [[maybe_unused]] uint8_t* buf,
+                                     [[maybe_unused]] size_t len) {
+    /*
+    //GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
     //strncpy (keyy, keyval, keylength);
@@ -119,22 +118,22 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       keyy[k] = keyval[k];
     }
     keyy[keylength-1] = '\0';
-    //GET_TIMESTAMP(start_latency);
+
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
-    //GET_TIMESTAMP(end_latency);
+
     std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
-      if ((strcmp(kvstore[j].key, "\0") == 0) || (strcmp(kvstore[j].key, keyy) == 0)) {
-        kvstore[j].key = keyy;
-        kvstore[j].value = keyval;
+      if ((strcmp(kvstore[j].key, "\0") == 0) || (strcmp(kvstore[j].key, keyy)
+    == 0)) { kvstore[j].key = keyy; kvstore[j].value = keyval;
         /*std::cout << "\n"
                 << "Key " << i % kvlength << " committed"
-                << "\n"; */
+                << "\n"; (****)
         break;
       }
     }
-    
+    //GET_TIMESTAMP(end_latency);
+    */
   });
 
   // Wait enough time for the consensus to become ready
@@ -172,10 +171,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       dory::ProposeError err;
-      //std::cout << "Proposing " << i << std::endl;
+      // std::cout << "Proposing " << i << std::endl;
       GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
-      //std::cout << "Oh boy" << std::endl;
+      // std::cout << "Oh boy" << std::endl;
       GET_TIMESTAMP(end_latency);
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
