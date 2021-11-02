@@ -109,7 +109,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                            &kvstore]([[maybe_unused]] bool leader,
                                      [[maybe_unused]] uint8_t* buf,
                                      [[maybe_unused]] size_t len) {
-    /*
+    
     //GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
@@ -133,7 +133,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       }
     }
     //GET_TIMESTAMP(end_latency);
-    */
+    
   });
 
   // Wait enough time for the consensus to become ready
