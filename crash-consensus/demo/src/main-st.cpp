@@ -13,8 +13,8 @@
 #include "helpers.hpp"
 #include "timers.h"
 ///////////////// Native K-V Implementation: Project - ASMR
-#include <sstream>
 #include <cstring>
+#include <sstream>
 int kvlength = 500000;  // size of the Key-Value Store
 int keylength = 32;     // in bytes
 char aaa[] = "0";       // init k-v store
@@ -109,28 +109,28 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                            &kvstore]([[maybe_unused]] bool leader,
                                      [[maybe_unused]] uint8_t* buf,
                                      [[maybe_unused]] size_t len) {
-    
-    /*GET_TIMESTAMP(start_latency);
+    // GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
-    //strncpy (keyy, keyval, keylength);
-    for (int k=0; k<keylength; k++){
+    // strncpy (keyy, keyval, keylength);
+    for (int k = 0; k < keylength; k++) {
       keyy[k] = keyval[k];
     }
-    keyy[keylength-1] = '\0';
+    keyy[keylength - 1] = '\0';
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
 
     std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
-      if ((strcmp(kvstore[j].key, "\0") == 0) || (strcmp(kvstore[j].key, keyy)
-    == 0)) { kvstore[j].key = keyy; kvstore[j].value = keyval;
+      if ((strcmp(kvstore[j].key, "\0") == 0) ||
+          (strcmp(kvstore[j].key, keyy) == 0)) {
+        kvstore[j].key = keyy;
+        kvstore[j].value = keyval;
         break;
       }
     }
-    GET_TIMESTAMP(end_latency);
-    */
+    // GET_TIMESTAMP(end_latency);
   });
 
   // Wait enough time for the consensus to become ready
@@ -170,12 +170,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       GET_TIMESTAMP(start_latency);
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
-      //GET_TIMESTAMP(start_latency);
+      // GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       // std::cout << "Oh boy" << std::endl;
-      //GET_TIMESTAMP(end_latency);
-      //latencies_start.push_back((start_latency));
-      //latencies_end.push_back((end_latency));
+      // GET_TIMESTAMP(end_latency);
+      // latencies_start.push_back((start_latency));
+      // latencies_end.push_back((end_latency));
       // std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
       if (err != dory::ProposeError::NoError) {
         /*uint8_t* f = &(payloads[i % 8192][0]);
