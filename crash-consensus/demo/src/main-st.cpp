@@ -242,8 +242,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     dump.close();
 
-    dump1.open1("dump-st-mu-" + std::to_string(payload_size) + "-" +
-                std::to_string(outstanding_req) + ".txt");
+    dump1.open("dump-st-mu-" + std::to_string(payload_size) + "-" +
+               std::to_string(outstanding_req) + ".txt");
 
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
       auto [last_id, timestamp] = timestamps_ranges[i];
