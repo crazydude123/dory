@@ -164,7 +164,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T start_meas, end_meas;
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
-    for (int i = 0; i < times; i++) {
+    for (int i = 0; i < 5; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       GET_TIMESTAMP(start_latency);
