@@ -168,6 +168,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       GET_TIMESTAMP(start_latency);
+      GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
       // GET_TIMESTAMP(start_latency);
@@ -184,7 +185,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           std::cout << f[n] << std::endl;
         }*/
         // std::cout << "Proposal failed at index " << i << std::endl;
-        std::cout << "Check" << std::endl;
         i -= 1;
         switch (err) {
           case dory::ProposeError::FastPath:
@@ -216,30 +216,50 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                       << std::endl;
         }
       }
+      GET_TIMESTAMP(loop_time);
       GET_TIMESTAMP(end_latency);
+      auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
+      (void)id_posted;
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
+      timestamps_ranges[i] =
+          std::make_pair(int(id_replicated - offset), loop_time);
     }
     GET_TIMESTAMP(end_meas);
     std::cout << "Replicated " << times << " commands of size " << payload_size
               << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
               << std::endl;
-    std::ofstream dump;
+    std::ofstream dump, dump1;
     dump.open("dump-st-" + std::to_string(payload_size) + "-" +
               std::to_string(outstanding_req) + ".txt");
+    int start_range = 0;
+    TIMESTAMP_T last_received;
+    GET_TIMESTAMP(last_received);
     for (unsigned int i = 0; i < latencies_start.size(); ++i) {
       std::cout << latencies_start.at(i).tv_nsec << " "
                 << latencies_end.at(i).tv_nsec << std::endl;
       dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) << "\n";
     }
     dump.close();
-    // long summ = 0;
-    /*for(auto i = latencies.begin(); i != latencies.end(); ++i) {
-        summ = *i + summ;
-    }
-    summ = summ/times;*/
-    // std::cout << "Average Commit Latency is " << summ << " ns" << std::endl;
 
+    dump1.open1("dump-st-mu-" + std::to_string(payload_size) + "-" +
+                std::to_string(outstanding_req) + ".txt");
+
+    for (size_t i = 0; i < timestamps_ranges.size(); i++) {
+      auto [last_id, timestamp] = timestamps_ranges[i];
+      for (int j = start_range; j < last_id; j++) {
+        last_received = timestamp;
+        // std::cout << start_range << " " << last_id << " " << std::endl;
+        std::cout << timestamps_start[j].tv_nsec << " " << timestamp.tv_nsec
+                  << std::endl;
+        dump1 << ELAPSED_NSEC(timestamps_start[j], timestamp) << "\n";
+      }
+
+      if (start_range < last_id) {
+        start_range = last_id;
+      }
+    }
+    dump1.close();
     exit(0);
   }
 }
