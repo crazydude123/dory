@@ -165,7 +165,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       for (int j = start_range; j < last_id; j++) {
         last_received = timestamp;
         // std::cout << start_range << " " << last_id << " " << std::endl;
-        std::cout << timestamps_start[j] << " " << timestamp << std::endl;
+        std::cout << timestamps_start[j].tv_nsec << " " << timestamp.tv_nsec
+                  << std::endl;
         dump << ELAPSED_NSEC(timestamps_start[j], timestamp) << "\n";
       }
 
