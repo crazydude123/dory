@@ -167,7 +167,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     for (int i = 0; i < 5; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
-      GET_TIMESTAMP(start_latency);
+      // GET_TIMESTAMP(start_latency);
       GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
@@ -220,7 +220,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(end_latency);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
-      latencies_start.push_back((start_latency));
+      latencies_start.push_back((timestamps_start[i]));
       latencies_end.push_back((loop_time));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
