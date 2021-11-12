@@ -245,7 +245,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                std::to_string(outstanding_req) + ".txt");
 
     start_range = 0;
-    TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
 
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
