@@ -235,13 +235,14 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     int start_range = 0;
     TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
-    for (unsigned int i = 0; i < latencies_start.size(); i++) {
+    for (unsigned int i = 0; i < latencies_start.size() - 1; i++) {
       dump << (latencies_start.at(i).tv_nsec +
                latencies_start.at(i).tv_sec * 1000000000UL)
            << " "
            << (latencies_end.at(i).tv_nsec +
                latencies_end.at(i).tv_sec * 1000000000UL)
-           << " " << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i))
+           << " "
+           << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i + 1))
            << "\n";
     }
     dump.close();
