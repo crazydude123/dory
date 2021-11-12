@@ -109,7 +109,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                            &kvstore]([[maybe_unused]] bool leader,
                                      [[maybe_unused]] uint8_t* buf,
                                      [[maybe_unused]] size_t len) {
-    // GET_TIMESTAMP(start_latency);
+    GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
     // strncpy (keyy, keyval, keylength);
@@ -130,7 +130,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         break;
       }
     }
-    // GET_TIMESTAMP(end_latency);
+    GET_TIMESTAMP(end_latency);
   });
 
   // Wait enough time for the consensus to become ready
@@ -164,7 +164,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T start_meas, end_meas;
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < times; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       // GET_TIMESTAMP(start_latency);
@@ -220,8 +220,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(end_latency);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
-      latencies_start.push_back((timestamps_start[i]));
-      latencies_end.push_back((loop_time));
+      // latencies_start.push_back((timestamps_start[i]));
+      // latencies_end.push_back((loop_time));
+      latencies_start.push_back((start_latency));
+      latencies_start.push_back((end_latency));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
     }
@@ -236,13 +238,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
     for (unsigned int i = 0; i < latencies_start.size() - 1; i++) {
-      dump << (latencies_start.at(i).tv_nsec +
-               latencies_start.at(i).tv_sec * 1000000000UL)
-           << " "
-           << (latencies_end.at(i).tv_nsec +
-               latencies_end.at(i).tv_sec * 1000000000UL)
-           << " "
-           << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i + 1))
+      dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i + 1))
            << "\n";
     }
     dump.close();
