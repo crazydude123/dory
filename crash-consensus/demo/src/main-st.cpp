@@ -223,7 +223,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // latencies_start.push_back((timestamps_start[i]));
       // latencies_end.push_back((loop_time));
       latencies_start.push_back((start_latency));
-      latencies_start.push_back((end_latency));
+      latencies_end.push_back((end_latency));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
     }
@@ -249,7 +249,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
       auto [last_id, timestamp] = timestamps_ranges[i];
       for (int j = start_range; j < last_id; j++) {
-        std::cout << i << " " << j << std::endl;
+        // std::cout << i << " " << j << std::endl;
         last_received = timestamp;
         // std::cout << start_range << " " << last_id << " " << std::endl;
         dump1 << (timestamps_start[j].tv_nsec +
