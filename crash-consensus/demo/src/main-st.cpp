@@ -164,7 +164,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T start_meas, end_meas;
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < times; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       // GET_TIMESTAMP(start_latency);
@@ -236,36 +236,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
     for (unsigned int i = 0; i < latencies_start.size(); i++) {
-      dump << (latencies_start.at(i).tv_nsec +
-               latencies_start.at(i).tv_sec * 1000000000UL)
-           << " "
-           << (latencies_end.at(i).tv_nsec +
-               latencies_end.at(i).tv_sec * 1000000000UL)
-           << " " << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i))
-           << "\n";
+      dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) << "\n";
     }
     dump.close();
-
-    dump1.open("dump-st-mu-" + std::to_string(payload_size) + "-" +
-               std::to_string(outstanding_req) + ".txt");
-
-    for (size_t i = 0; i < timestamps_ranges.size(); i++) {
-      auto [last_id, timestamp] = timestamps_ranges[i];
-      for (int j = start_range; j < last_id; j++) {
-        std::cout << i << " " << j << std::endl;
-        last_received = timestamp;
-        // std::cout << start_range << " " << last_id << " " << std::endl;
-        dump1 << (timestamps_start[j].tv_nsec +
-                  timestamps_start[j].tv_sec * 1000000000UL)
-              << " " << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
-              << " " << ELAPSED_NSEC(timestamps_start[j], timestamp) << "\n";
-      }
-
-      if (start_range < last_id) {
-        start_range = last_id;
-      }
-    }
-    dump1.close();
     exit(0);
   }
 }
