@@ -164,7 +164,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T start_meas, end_meas;
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
-    for (int i = 0; i < times; i++) {
+    for (int i = 0; i < 5; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       // GET_TIMESTAMP(start_latency);
@@ -226,9 +226,23 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           std::make_pair(int(id_replicated - offset), loop_time);
     }
     GET_TIMESTAMP(end_meas);
-    std::ofstream dump;
+    std::cout << "Replicated " << times << " commands of size " << payload_size
+              << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
+              << std::endl;
+    std::ofstream dump, dump1, dump2;
     dump.open("dump-st-" + std::to_string(payload_size) + "-" +
               std::to_string(outstanding_req) + ".txt");
+    int start_range = 0;
+    TIMESTAMP_T last_received;
+    GET_TIMESTAMP(last_received);
+    for (unsigned int i = 0; i < latencies_start.size(); i++) {
+      dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) << "\n";
+    }
+    dump.close();
+
+    std::ofstream dump1;
+    dump1.open("dump-st-gg" + std::to_string(payload_size) + "-" +
+               std::to_string(outstanding_req) + ".txt");
 
     int start_range = 0;
     TIMESTAMP_T last_received;
@@ -246,8 +260,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         start_range = last_id;
       }
     }
-
-    dump.close();
     exit(0);
   }
 }
