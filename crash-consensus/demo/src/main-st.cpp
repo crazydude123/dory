@@ -217,11 +217,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         }
       }
       GET_TIMESTAMP(loop_time);
-      GET_TIMESTAMP(end_latency);
+      // GET_TIMESTAMP(end_latency);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
       latencies_start.push_back((start_latency));
-      latencies_end.push_back((end_latency));
+      latencies_end.push_back((loop_time));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
     }
@@ -229,7 +229,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << "Replicated " << times << " commands of size " << payload_size
               << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
               << std::endl;
-    std::ofstream dump, dump1;
+    std::ofstream dump, dump1, dump2;
     dump.open("dump-st-" + std::to_string(payload_size) + "-" +
               std::to_string(outstanding_req) + ".txt");
     int start_range = 0;
