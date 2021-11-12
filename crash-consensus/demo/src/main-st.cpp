@@ -229,7 +229,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::cout << "Replicated " << times << " commands of size " << payload_size
               << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
               << std::endl;
-    std::ofstream dump, dump1, dump2;
+    std::ofstream dump;
     dump.open("dump-st-" + std::to_string(payload_size) + "-" +
               std::to_string(outstanding_req) + ".txt");
     int start_range = 0;
@@ -244,7 +244,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     dump1.open("dump-st-gg" + std::to_string(payload_size) + "-" +
                std::to_string(outstanding_req) + ".txt");
 
-    int start_range = 0;
+    start_range = 0;
     TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
 
