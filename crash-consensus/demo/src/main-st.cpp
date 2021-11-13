@@ -164,7 +164,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T start_meas, end_meas;
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
-    for (int i = 0; i < times; i++) {
+    for (int i = 0; i < 5; i++) {
       // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
       // GET_TIMESTAMP(start_latency);
@@ -247,7 +247,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
       auto [last_id, timestamp] = timestamps_ranges[i];
-      std::cout << "i" << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
+      std::cout << "Last id: " << last_id << "i "
+                << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
                 << std::endl;
       for (int j = start_range; j < last_id; j++) {
         // std::cout << i << " " << j << std::endl;
