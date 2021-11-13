@@ -220,6 +220,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // GET_TIMESTAMP(end_latency);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
+      std::cout << "Posted " << id_posted << " replicated " << id_replicated
+                << std::endl;
       // latencies_start.push_back((timestamps_start[i]));
       // latencies_end.push_back((loop_time));
       latencies_start.push_back((start_latency));
