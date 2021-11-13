@@ -184,7 +184,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         for (int n = 0; n < 8192; n++) {
           std::cout << f[n] << std::endl;
         }*/
-        // std::cout << "Proposal failed at index " << i << std::endl;
+        std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
         switch (err) {
           case dory::ProposeError::FastPath:
@@ -247,6 +247,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
       auto [last_id, timestamp] = timestamps_ranges[i];
+      std::cout << "i" << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
+                << std::endl;
       for (int j = start_range; j < last_id; j++) {
         // std::cout << i << " " << j << std::endl;
         last_received = timestamp;
