@@ -226,6 +226,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       latencies_end.push_back((end_latency));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
+      std::cout << "Proposed " << i << " replicated " << id_replicated
+                << " offset " << offset << std::endl;
     }
     GET_TIMESTAMP(end_meas);
     std::cout << "Replicated " << times << " commands of size " << payload_size
