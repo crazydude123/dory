@@ -101,7 +101,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start;
   std::vector<TIMESTAMP_T> latencies_end;
-  std::vector<TIMESTAMP_T> chumma;
+  TIMESTAMP_T chumma;
   // std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
