@@ -112,7 +112,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
     char keyy[keylength] = "Eight";
-    // strncpy (keyy, keyval, keylength);
     for (int k = 0; k < keylength; k++) {
       keyy[k] = keyval[k];
     }
@@ -120,7 +119,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
 
-    // std::cout << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if ((strcmp(kvstore[j].key, "\0") == 0) ||
@@ -254,7 +252,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       std::cout << "Last id: " << last_id << "i "
                 << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
                 << std::endl;
-      for (int j = start_range; j < last_id; j++) {
+      for (int j = start_range; j <= last_id; j++) {
         // std::cout << i << " " << j << std::endl;
         last_received = timestamp;
         // std::cout << start_range << " " << last_id << " " << std::endl;
