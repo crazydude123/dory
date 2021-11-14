@@ -101,6 +101,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start;
   std::vector<TIMESTAMP_T> latencies_end;
+  std::vector<TIMESTAMP_T> chumma;
   // std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
@@ -116,6 +117,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       keyy[k] = keyval[k];
     }
     keyy[keylength - 1] = '\0';
+
+    GET_TIMESTAMP(chumma);
+    std::cout << "CHUMMA: " << (chumma.tv_nsec + chumma.tv_sec * 1000000000UL)
+              << std::endl;
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
 
@@ -240,7 +245,15 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
     for (unsigned int i = 0; i < latencies_start.size() - 1; i++) {
-      dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) << "\n";
+      // dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) <<
+      // "\n";
+      dump << (latencies_start.at(i).tv_nsec +
+               latencies_start.at(i).tv_sec * 1000000000UL)
+           << " "
+           << (latencies_end.at(i).tv_nsec +
+               latencies_end.at(i).tv_sec * 1000000000UL)
+           << " " << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i))
+           << "\n";
     }
     dump.close();
 
@@ -252,7 +265,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       std::cout << "Last id: " << last_id << "i "
                 << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
                 << std::endl;
-      for (int j = start_range; j <= last_id; j++) {
+      for (int j = start_range; j < last_id; j++) {
         // std::cout << i << " " << j << std::endl;
         last_received = timestamp;
         // std::cout << start_range << " " << last_id << " " << std::endl;
