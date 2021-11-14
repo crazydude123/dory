@@ -106,7 +106,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size, &end_latency, &latencies_end,
-                           &start_latency, &latencies_start,
+                           &start_latency, &latencies_start, &chumma,
                            &kvstore]([[maybe_unused]] bool leader,
                                      [[maybe_unused]] uint8_t* buf,
                                      [[maybe_unused]] size_t len) {
