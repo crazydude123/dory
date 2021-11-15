@@ -117,7 +117,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       keyy[k] = keyval[k];
     }
     keyy[keylength - 1] = '\0';
-
     GET_TIMESTAMP(chumma);
     std::cout << "CHUMMA: " << (chumma.tv_nsec + chumma.tv_sec * 1000000000UL)
               << std::endl;
@@ -135,7 +134,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     GET_TIMESTAMP(end_latency);
   });
-
+  // Before starting replication: 374028291709359
+  // 374029080598507
+  // 374029080610431
   // Wait enough time for the consensus to become ready
   std::cout << "Wait some time" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(5 + 3 - id));
@@ -168,25 +169,13 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
     for (int i = 0; i < 5; i++) {
-      // GET_TIMESTAMP(timestamps_start[i]);
       // Encode process doing the proposal
-      // GET_TIMESTAMP(start_latency);
       GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
-      // GET_TIMESTAMP(start_latency);
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
-      // std::cout << "Oh boy" << std::endl;
-      // GET_TIMESTAMP(end_latency);
-      // latencies_start.push_back((start_latency));
-      // latencies_end.push_back((end_latency));
-      // std::cout << ELAPSED_NSEC(start_latency, end_latency) << std::endl;
+
       if (err != dory::ProposeError::NoError) {
-        /*uint8_t* f = &(payloads[i % 8192][0]);
-        std::cout << f << std::endl;
-        for (int n = 0; n < 8192; n++) {
-          std::cout << f[n] << std::endl;
-        }*/
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
         switch (err) {
@@ -220,13 +209,10 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         }
       }
       GET_TIMESTAMP(loop_time);
-      // GET_TIMESTAMP(end_latency);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
       std::cout << "Posted " << id_posted << " replicated " << id_replicated
                 << std::endl;
-      // latencies_start.push_back((timestamps_start[i]));
-      // latencies_end.push_back((loop_time));
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
       timestamps_ranges[i] =
@@ -244,7 +230,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     int start_range = 0;
     TIMESTAMP_T last_received;
     GET_TIMESTAMP(last_received);
-    for (unsigned int i = 0; i < latencies_start.size() - 1; i++) {
+    for (unsigned int i = 0; i < latencies_start.size(); i++) {
       // dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) <<
       // "\n";
       dump << (latencies_start.at(i).tv_nsec +
@@ -283,3 +269,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     exit(0);
   }
 }
+
+// After Propose is called - 374029080598507
+// Second time inside commitHandler - 374029080610431
