@@ -99,8 +99,8 @@ int main(int argc, char* argv[]) {
 
 void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
-  std::vector<TIMESTAMP_T> latencies_start;
-  std::vector<TIMESTAMP_T> latencies_end;
+  std::vector<TIMESTAMP_T> latencies_start, replic_latencies_start;
+  std::vector<TIMESTAMP_T> latencies_end, replic_latencies_end;
   TIMESTAMP_T chumma;
   // std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
@@ -147,9 +147,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::vector<uint8_t> payload_buffer(payload_size + 2);
     uint8_t* payload = &payload_buffer[0];
 
-    std::vector<TIMESTAMP_T> timestamps_start(times),
-        replic_latencies_start(times);
-    std::vector<TIMESTAMP_T> timestamps_end(times), replic_latencies_end(times);
+    std::vector<TIMESTAMP_T> timestamps_start(times);
+    std::vector<TIMESTAMP_T> timestamps_end(times);
     std::vector<std::pair<int, TIMESTAMP_T>> timestamps_ranges(times);
     TIMESTAMP_T loop_time;
 
@@ -274,8 +273,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     start_range = 0;
     GET_TIMESTAMP(last_received);
     for (unsigned int i = 0; i < replic_latencies_start.size(); i++) {
-      // dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) <<
-      // "\n";
       dump2 << (replic_latencies_start.at(i).tv_nsec +
                 replic_latencies_start.at(i).tv_sec * 1000000000UL)
             << " "
