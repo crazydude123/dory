@@ -122,7 +122,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
               << std::endl;
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
-
+    std::cout << "Node " << id << " stores Key " << keyy << " hashed to "
+              << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if ((strcmp(kvstore[j].key, "\0") == 0) ||
