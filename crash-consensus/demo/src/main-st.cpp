@@ -228,7 +228,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
               << " bytes in " << ELAPSED_NSEC(start_meas, end_meas) << " ns"
               << std::endl;
     std::ofstream dump, dump1, dump2;
-    dump.open("dump-st-" + std::to_string(payload_size) + "-" +
+    dump.open("dump-st-dd" + std::to_string(payload_size) + "-" +
               std::to_string(outstanding_req) + ".txt");
     int start_range = 0;
     TIMESTAMP_T last_received;
@@ -246,22 +246,16 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     dump.close();
 
-    dump1.open("dump-st-mu-" + std::to_string(payload_size) + "-" +
+    dump1.open("dump-st" + std::to_string(payload_size) + "-" +
                std::to_string(outstanding_req) + ".txt");
 
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
       auto [last_id, timestamp] = timestamps_ranges[i];
-      std::cout << "Last id: " << last_id << "i "
-                << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
-                << std::endl;
       for (int j = start_range; j < last_id; j++) {
         // std::cout << i << " " << j << std::endl;
         last_received = timestamp;
         // std::cout << start_range << " " << last_id << " " << std::endl;
-        dump1 << (timestamps_start[j].tv_nsec +
-                  timestamps_start[j].tv_sec * 1000000000UL)
-              << " " << (timestamp.tv_nsec + timestamp.tv_sec * 1000000000UL)
-              << " " << ELAPSED_NSEC(timestamps_start[j], timestamp) << "\n";
+        dump1 << ELAPSED_NSEC(timestamps_start[j], timestamp) << "\n";
       }
 
       if (start_range < last_id) {
