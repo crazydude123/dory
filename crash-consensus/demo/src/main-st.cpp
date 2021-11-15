@@ -216,8 +216,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                 << std::endl;
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
-      replic_latencies_start.push_back(timestamps_start[i]);
-      replic_latencies_end.push_back(loop_time);
+      replic_latencies_start.push_back((timestamps_start[i]));
+      replic_latencies_end.push_back((loop_time));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
       std::cout << "Proposed " << i << " replicated in " << id_replicated
@@ -273,7 +273,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                std::to_string(outstanding_req) + ".txt");
     start_range = 0;
     GET_TIMESTAMP(last_received);
-    for (unsigned int i = 0; i < latencies_start.size(); i++) {
+    for (unsigned int i = 0; i < replic_latencies_start.size(); i++) {
       // dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) <<
       // "\n";
       dump2 << (replic_latencies_start.at(i).tv_nsec +
