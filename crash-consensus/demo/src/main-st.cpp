@@ -147,8 +147,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     std::vector<uint8_t> payload_buffer(payload_size + 2);
     uint8_t* payload = &payload_buffer[0];
 
-    std::vector<TIMESTAMP_T> timestamps_start(times);
-    std::vector<TIMESTAMP_T> timestamps_end(times);
+    std::vector<TIMESTAMP_T> timestamps_start(times),
+        replic_latencies_start(times);
+    std::vector<TIMESTAMP_T> timestamps_end(times), replic_latencies_end(times);
     std::vector<std::pair<int, TIMESTAMP_T>> timestamps_ranges(times);
     TIMESTAMP_T loop_time;
 
@@ -172,7 +173,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // Encode process doing the proposal
       GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
-      // std::cout << "Proposing " << i << std::endl;
+      std::cout << "Proposing " << i << std::endl;
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
 
       if (err != dory::ProposeError::NoError) {
@@ -211,13 +212,15 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       GET_TIMESTAMP(loop_time);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
-      std::cout << "Posted " << id_posted << " replicated " << id_replicated
+      std::cout << "Posted " << id_posted << ",replicated in " << id_replicated
                 << std::endl;
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
+      replic_latencies_start.push_back(timestamps_start[i]);
+      replic_latencies_end.push_back(loop_time);
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
-      std::cout << "Proposed " << i << " replicated " << id_replicated
+      std::cout << "Proposed " << i << " replicated in " << id_replicated
                 << " offset " << offset << std::endl;
     }
     GET_TIMESTAMP(end_meas);
@@ -266,6 +269,26 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       }
     }
     dump1.close();
+    dump2.open("dump-st-repli-" + std::to_string(payload_size) + "-" +
+               std::to_string(outstanding_req) + ".txt");
+    start_range = 0;
+    TIMESTAMP_T last_received;
+    GET_TIMESTAMP(last_received);
+    for (unsigned int i = 0; i < latencies_start.size(); i++) {
+      // dump << ELAPSED_NSEC(latencies_start.at(i), latencies_end.at(i)) <<
+      // "\n";
+      dump2 << (replic_latencies_start.at(i).tv_nsec +
+                replic_latencies_start.at(i).tv_sec * 1000000000UL)
+            << " "
+            << (replic_latencies_end.at(i).tv_nsec +
+                replic_latencies_end.at(i).tv_sec * 1000000000UL)
+            << " "
+            << ELAPSED_NSEC(replic_latencies_start.at(i),
+                            replic_latencies_end.at(i))
+            << "\n";
+    }
+    dump2.close();
+
     exit(0);
   }
 }
