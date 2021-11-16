@@ -118,12 +118,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     keyy[keylength - 1] = '\0';
     GET_TIMESTAMP(chumma);
-    std::cout << "CHUMMA: " << (chumma.tv_nsec + chumma.tv_sec * 1000000000UL)
-              << std::endl;
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
-    std::cout << "Node " << id << " stores Key " << keyy << " hashed to "
-              << hashindex << std::endl;
     for (int i = hashindex; i < kvlength + hashindex; i++) {
       int j = i % kvlength;
       if ((strcmp(kvstore[j].key, "\0") == 0) ||
@@ -173,7 +169,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // Encode process doing the proposal
       GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
-      std::cout << "Proposing " << i << std::endl;
+      // std::cout << "Proposing " << i << std::endl;
       err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
 
       if (err != dory::ProposeError::NoError) {
@@ -212,16 +208,12 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       GET_TIMESTAMP(loop_time);
       auto [id_posted, id_replicated] = consensus.proposedReplicatedRange();
       (void)id_posted;
-      std::cout << "Posted " << id_posted << ",replicated in " << id_replicated
-                << std::endl;
       latencies_start.push_back((start_latency));
       latencies_end.push_back((end_latency));
       replic_latencies_start.push_back((timestamps_start[i]));
       replic_latencies_end.push_back((loop_time));
       timestamps_ranges[i] =
           std::make_pair(int(id_replicated - offset), loop_time);
-      std::cout << "Proposed " << i << " replicated in " << id_replicated
-                << " offset " << offset << std::endl;
     }
     GET_TIMESTAMP(end_meas);
     std::cout << "Replicated " << times << " commands of size " << payload_size
