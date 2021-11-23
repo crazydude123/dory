@@ -193,7 +193,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
         return;
       } else {
         GET_TIMESTAMP(end_latency);
-        return kvstore[hashindex].value;
+        return;
       }
     }
 
