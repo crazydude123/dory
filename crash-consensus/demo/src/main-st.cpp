@@ -188,14 +188,13 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       }
       keyy[keylength] = '\0';
       int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
-        if ((strcmp(kvstore[hashindex].key, "\0") == 0){
+      if ((strcmp(kvstore[hashindex].key, "\0")) == 0) {
         GET_TIMESTAMP(end_latency);
         return;
-        }
-        else{
+      } else {
         GET_TIMESTAMP(end_latency);
         return kvstore[hashindex].value;
-        }
+      }
     }
 
     for (int k = 0; k < keylength; k++) {
