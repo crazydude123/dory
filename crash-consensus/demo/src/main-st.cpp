@@ -17,7 +17,11 @@
 #include <sstream>
 int kvlength = 500000;  // size of the Key-Value Store
 int keylength = 32;     // in bytes
-char aaa[] = "0";       // init k-v store
+int valuelength = 32;
+int payloadread = 0;  // length of key + value from workload.txt
+int timesread = 0;    // number of operations to execute
+
+char aaa[] = "0";  // init k-v store
 ///////////////// Native K-V Implementation: Project - ASMR
 typedef struct keyvalue {
   char* key;
@@ -101,22 +105,107 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                int outstanding_req, dory::ThreadBank threadBank) {
   std::vector<TIMESTAMP_T> latencies_start, replic_latencies_start;
   std::vector<TIMESTAMP_T> latencies_end, replic_latencies_end;
+
+  // start of reading workload from file
+  std::ifstream infile("workload.txt");
+  std::vector<std::string> lines;
+  std::string line;
+  while (std::getline(infile, line)) {
+    lines.push_back(line);
+  }
+  // split each line into words and store all words in a vector
+  std::vector<std::vector<std::string>> words;
+  std::vector<char*> words11;
+  for (int i = 0; i < lines.size(); i++) {
+    std::stringstream ss(lines[i]);
+    std::string word;
+    std::vector<std::string> line_words;
+    while (std::getline(ss, word, ' ')) {
+      line_words.push_back(word);
+    }
+    words.push_back(line_words);
+  }
+  // print all words
+  for (int i = 0; i < words.size(); i++) {
+    for (int j = 0; j < words[i].size(); j++) {
+      words11.push_back(const_cast<char*>(words[i][j].c_str()));
+    }
+  }
+
+  // if first word in words is "SET", append the next two words and push into
+  // new vector; else, append the next word and push into same vector
+  std::vector<char*> new_words;
+  std::vector<int> flagforread;
+  int ii = 0;
+  while (ii < words11.size()) {
+    if (strcmp(words11[ii], "SET") == 0) {
+      char* new_word =
+          new char[strlen(words11[ii + 1]) + strlen(words11[ii + 2]) + 1];
+      strcat(new_word, "1");
+      strcat(new_word, words11[ii + 1]);
+      keylength = strlen(new_word);
+      valuelength = strlen(words11[ii + 2]);
+      flagforread.push_back(1);
+      // std::cout << strlen(words11[ii + 1]) << strlen(words11[ii + 2]) <<
+      // std::endl;
+      strcat(new_word, words11[ii + 2]);
+      new_words.push_back(new_word);
+      ii += 3;
+    } else if (strcmp(words11[ii], "GET") == 0) {
+      keylength = strlen(words11[ii + 1]);
+      char* new_word = new char[strlen(words11[ii + 1]) + 1];
+      strcat(new_word, "0");
+      strcpy(new_word, words11[ii + 1]);
+      new_words.push_back(new_word);
+      flagforread.push_back(0);
+      ii += 2;
+    } else {
+      ii++;
+    }
+  }
+  timesread = new_words.size();
+  payloadread = keylength + valuelength;
+
+  // end of reading workload from file
+
   TIMESTAMP_T chumma;
   // std::cout << "Am I here inside benchmark?" << std::endl;
   TIMESTAMP_T start_latency, end_latency;
   dory::Consensus consensus(id, remote_ids, outstanding_req, threadBank);
   consensus.commitHandler([&payload_size, &end_latency, &latencies_end,
                            &start_latency, &latencies_start, &chumma, &id,
+                           &timesread, &payloadread, &flagforread, &new_words,
                            &kvstore]([[maybe_unused]] bool leader,
                                      [[maybe_unused]] uint8_t* buf,
                                      [[maybe_unused]] size_t len) {
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
-    char keyy[keylength] = "Eight";
-    for (int k = 0; k < keylength; k++) {
-      keyy[k] = keyval[k];
+    char keyy[keylength + 1] = "Eight";
+    char value[valuelength + 1] = "Eight";
+    if (keyval[0] == '0') {
+      for (int k = 0; k < keylength; k++) {
+        keyy[k] = keyval[k + 1];
+      }
+      keyy[keylength] = '\0';
+      int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
+        if ((strcmp(kvstore[hashindex].key, "\0") == 0){
+        GET_TIMESTAMP(end_latency);
+        return;
+        }
+        else{
+        GET_TIMESTAMP(end_latency);
+        return kvstore[hashindex].value;
+        }
     }
-    keyy[keylength - 1] = '\0';
+
+    for (int k = 0; k < keylength; k++) {
+      keyy[k] = keyval[k + 1];
+    }
+    keyy[keylength] = '\0';
+    for (int k = 0; k < valuelength; k++) {
+      value[k] = keyval[k + keylength + 1];
+    }
+    value[valuelength] = '\0';
     GET_TIMESTAMP(chumma);
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
@@ -165,13 +254,14 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     TIMESTAMP_T start_meas, end_meas;
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
-    for (int i = 0; i < times; i++) {
+    // for (int i = 0; i < times; i++) {
+    for (int i = 0; i < timesread; i++) {
       // Encode process doing the proposal
       GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
-      err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
-
+      // err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
+      err = consensus.propose(&(new_words[i]), payloadread);
       if (err != dory::ProposeError::NoError) {
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
@@ -275,6 +365,3 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     exit(0);
   }
 }
-
-// After Propose is called - 374029080598507
-// Second time inside commitHandler - 374029080610431
