@@ -125,7 +125,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     words.push_back(line_words);
   }
-  std::cout << "Sule magane " << words.size() << std::endl;
+  std::cout << "Sule magane " << lines.size() << std::endl;
   for (int i = 0; i < words.size(); i++) {
     for (int j = 0; j < words[i].size(); j++) {
       words11.push_back(const_cast<char*>(words[i][j].c_str()));
