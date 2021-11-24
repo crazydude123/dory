@@ -141,7 +141,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           new char[strlen(words11[ii + 1]) + strlen(words11[ii + 2]) + 1];
       strcpy(new_word, "1");
       strcat(new_word, words11[ii + 1]);
-      keylength = strlen(new_word - 1);
+      keylength = strlen(new_word) - 1;
       valuelength = strlen(words11[ii + 2]);
       std::cout << "Length of Key: " << keylength << std::endl;
       std::cout << "Length of Key: " << valuelength << std::endl;
