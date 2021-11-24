@@ -74,6 +74,8 @@ int main(int argc, char* argv[]) {
   }
 
   payload_size = atoi(argv[2]);
+  keylength = payload_size / 2;
+  valuelength = payload_size / 2;
   std::cout << "USING PAYLOAD SIZE = " << payload_size << std::endl;
 
   int outstanding_req = atoi(argv[3]);
