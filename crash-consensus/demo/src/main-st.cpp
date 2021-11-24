@@ -186,6 +186,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                                      [[maybe_unused]] size_t len) {
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
+    std::cout << keyval << std::endl;
     char keyy[keylength + 1] = "Eight";
     char value[valuelength + 1] = "Eight";
     if (keyval[0] == '0') {
@@ -336,7 +337,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     dump.close();
 
-    dump1.open("dump-st" + std::to_string(payload_size) + "-" +
+    dump1.open("dump-st-" + std::to_string(payload_size) + "-" +
                std::to_string(outstanding_req) + ".txt");
 
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
