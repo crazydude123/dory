@@ -107,7 +107,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   std::vector<TIMESTAMP_T> latencies_end, replic_latencies_end;
 
   // start of reading workload from file
-  std::ifstream infile("~/mu-scripts/workload.txt");
+  std::ifstream infile("/users/vijaravi/mu-scripts/workload.txt");
   std::vector<std::string> lines;
   std::string line;
   while (std::getline(infile, line)) {
