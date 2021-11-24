@@ -222,7 +222,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     keyy[keylength] = '\0';
     for (int k = 0; k < valuelength; k++) {
-      value[k] = keyval[k + keylength + 1];
+      value[k] = keyval[k + keylength];
     }
     value[valuelength] = '\0';
     std::cout << "Keey: " << keyy << " Valuee: " << value << std::endl;
