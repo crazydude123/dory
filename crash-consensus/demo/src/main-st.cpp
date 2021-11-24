@@ -167,7 +167,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   for (int i = 0; i < new_words.size(); i++) {
     uint8_t* new_word_uint8 = new uint8_t[strlen(new_words[i]) + 1];
     strcpy(reinterpret_cast<char*>(new_word_uint8), new_words[i]);
-    new_words_uint8.push_back(new_word_uint8);
+    new_words_uint8.push_back((uint8_t*)new_word_uint8);
   }
   timesread = new_words.size();
   payloadread = keylength + valuelength;
@@ -266,7 +266,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
       // err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
-      err = consensus.propose(&((uint8_t*)(new_words_uint8[i])), payloadread);
+      err = consensus.propose(&new_words_uint8[i], payloadread);
       if (err != dory::ProposeError::NoError) {
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
