@@ -145,6 +145,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       strcat(new_word, words11[ii + 1]);
       keylength = strlen(new_word);
       valuelength = strlen(words11[ii + 2]);
+      std::cout << "Length of Key: " << keylength << std::endl;
+      std::cout << "Length of Key: " << valuelength << std::endl;
       flagforread.push_back(1);
       // std::cout << strlen(words11[ii + 1]) << strlen(words11[ii + 2]) <<
       // std::endl;
@@ -153,6 +155,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       ii += 3;
     } else if (strcmp(words11[ii], "GET") == 0) {
       keylength = strlen(words11[ii + 1]);
+      std::cout << "Length of Key: " << keylength << std::endl;
       char* new_word = new char[strlen(words11[ii + 1]) + 1];
       strcpy(new_word, "0");
       strcat(new_word, words11[ii + 1]);
