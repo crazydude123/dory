@@ -172,8 +172,9 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   timesread = new_words.size();
   payloadread = keylength + valuelength;
   // print all words in new_words_uint8
+  std::cout << "Sule " << new_words_uint8.size() << std::endl;
   for (int i = 0; i < new_words_uint8.size(); i++) {
-    std::cout << "hi" << reinterpret_cast<char*>(new_words_uint8[i])
+    std::cout << "sule " << reinterpret_cast<char*>(new_words_uint8[i])
               << std::endl;
   }
 
