@@ -282,7 +282,8 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       // std::cout << "Proposing " << i << std::endl;
       // err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
       std::cout << (char*)new_words_uint8[i] << std::endl;
-      err = consensus.propose(&new_words_uint8[i][0], payload_size);
+      err = consensus.propose(&new_words_uint8[(i + 1) % timesread][0],
+                              payload_size);
       if (err != dory::ProposeError::NoError) {
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
