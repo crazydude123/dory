@@ -18,8 +18,8 @@
 int kvlength = 500000;  // size of the Key-Value Store
 int keylength = 32;     // in bytes
 int valuelength = 32;
-int payloadread = 0;  // length of key + value from workload.txt
-int timesread = 0;    // number of operations to execute
+size_t payloadread = 0;  // length of key + value from workload.txt
+int timesread = 0;       // number of operations to execute
 
 char aaa[] = "0";  // init k-v store
 ///////////////// Native K-V Implementation: Project - ASMR
@@ -141,7 +141,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     if (strcmp(words11[ii], "SET") == 0) {
       char* new_word =
           new char[strlen(words11[ii + 1]) + strlen(words11[ii + 2]) + 1];
-      strcat(new_word, "1");
+      strcpy(new_word, "1");
       strcat(new_word, words11[ii + 1]);
       keylength = strlen(new_word);
       valuelength = strlen(words11[ii + 2]);
@@ -154,14 +154,20 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     } else if (strcmp(words11[ii], "GET") == 0) {
       keylength = strlen(words11[ii + 1]);
       char* new_word = new char[strlen(words11[ii + 1]) + 1];
-      strcat(new_word, "0");
-      strcpy(new_word, words11[ii + 1]);
+      strcpy(new_word, "0");
+      strcat(new_word, words11[ii + 1]);
       new_words.push_back(new_word);
       flagforread.push_back(0);
       ii += 2;
     } else {
       ii++;
     }
+  }
+  std::vector<uint8_t*> new_words_uint8;
+  for (int i = 0; i < new_words.size(); i++) {
+    uint8_t* new_word_uint8 = new uint8_t[strlen(new_words[i]) + 1];
+    strcpy(reinterpret_cast<char*>(new_word_uint8), new_words[i]);
+    new_words_uint8.push_back(new_word_uint8);
   }
   timesread = new_words.size();
   payloadread = keylength + valuelength;
@@ -260,7 +266,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       dory::ProposeError err;
       // std::cout << "Proposing " << i << std::endl;
       // err = consensus.propose(&(payloads[i % 8192][0]), payload_size);
-      err = consensus.propose(&(new_words[i]), payloadread);
+      err = consensus.propose(&(new_words_uint8[i]), payloadread);
       if (err != dory::ProposeError::NoError) {
         std::cout << "Proposal failed at index " << i << std::endl;
         i -= 1;
