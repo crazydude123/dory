@@ -196,9 +196,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
       if ((strcmp(kvstore[hashindex].key, "\0")) == 0) {
         GET_TIMESTAMP(end_latency);
+        std::cout << "Key: " << keyy << " not found" << std::endl;
         return;
       } else {
         GET_TIMESTAMP(end_latency);
+        std::cout << "Key: " << keyy << " found" << std::endl;
         return;
       }
     }
@@ -211,6 +213,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       value[k] = keyval[k + keylength + 1];
     }
     value[valuelength] = '\0';
+    std::cout << "Key: " << keyy << " Value: " << value << std::endl;
     GET_TIMESTAMP(chumma);
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
