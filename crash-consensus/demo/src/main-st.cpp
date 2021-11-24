@@ -222,7 +222,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       value[k] = keyval[k + keylength + 1];
     }
     value[valuelength] = '\0';
-    std::cout << "Key: " << keyy << " Value: " << value << std::endl;
+    std::cout << "Keey: " << keyy << " Valuee: " << value << std::endl;
     GET_TIMESTAMP(chumma);
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
