@@ -131,7 +131,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       words11.push_back(const_cast<char*>(words[i][j].c_str()));
     }
   }
-
+  std::cout << "Am I in?" << std::endl;
   // if first word in words is "SET", append the next two words and push into
   // new vector; else, append the next word and push into same vector
   std::vector<char*> new_words;
