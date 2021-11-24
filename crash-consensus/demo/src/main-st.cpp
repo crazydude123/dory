@@ -125,13 +125,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     words.push_back(line_words);
   }
-  std::cout << "Just tell me " << lines.size() << std::endl;
   for (int i = 0; i < words.size(); i++) {
     for (int j = 0; j < words[i].size(); j++) {
       words11.push_back(const_cast<char*>(words[i][j].c_str()));
     }
   }
-  std::cout << "Am I in?" << std::endl;
   // if first word in words is "SET", append the next two words and push into
   // new vector; else, append the next word and push into same vector
   std::vector<char*> new_words;
@@ -143,7 +141,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
           new char[strlen(words11[ii + 1]) + strlen(words11[ii + 2]) + 1];
       strcpy(new_word, "1");
       strcat(new_word, words11[ii + 1]);
-      keylength = strlen(new_word);
+      keylength = strlen(new_word - 1);
       valuelength = strlen(words11[ii + 2]);
       std::cout << "Length of Key: " << keylength << std::endl;
       std::cout << "Length of Key: " << valuelength << std::endl;
