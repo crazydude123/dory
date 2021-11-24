@@ -1,11 +1,11 @@
 #include <chrono>
+#include <dory/crash-consensus.hpp>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
+#include <string>
 #include <thread>
 #include <vector>
-
-#include <dory/crash-consensus.hpp>
 
 #include <cassert>
 #include <condition_variable>
@@ -107,7 +107,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
   std::vector<TIMESTAMP_T> latencies_end, replic_latencies_end;
 
   // start of reading workload from file
-  std::ifstream infile("workload.txt");
+  std::ifstream infile("~/mu-scripts/workload.txt");
   std::vector<std::string> lines;
   std::string line;
   while (std::getline(infile, line)) {
