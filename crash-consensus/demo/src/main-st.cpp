@@ -44,7 +44,7 @@ int hasho(char* h, int size) {
     sum = sum * kvlength + h[i];
   }
   // std::cout << "Hasho" << sum << std::endl;
-  return (sum & 0x7FFFFFFF);
+  return (sum ^ 0x7FABF3FF);
 }
 
 int main(int argc, char* argv[]) {
@@ -197,7 +197,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
                                      [[maybe_unused]] size_t len) {
     GET_TIMESTAMP(start_latency);
     char* keyval = (char*)(buf);
-    std::cout << keyval << std::endl;
     char keyy[keylength + 1] = "Eight";
     char value[valuelength + 1] = "Eight";
     if (keyval[0] == '0') {
@@ -208,11 +207,11 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
       if ((strcmp(kvstore[hashindex].key, "\0")) == 0) {
         GET_TIMESTAMP(end_latency);
-        std::cout << "Key: " << keyy << " not found" << std::endl;
+        std::cout << "Key0: " << keyy << " not found" << std::endl;
         return;
       } else {
         GET_TIMESTAMP(end_latency);
-        std::cout << "Key: " << keyy << " found" << std::endl;
+        std::cout << "Key0: " << keyy << " found" << std::endl;
         return;
       }
     }
@@ -225,7 +224,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
       value[k] = keyval[k + keylength];
     }
     value[valuelength] = '\0';
-    std::cout << "Keey: " << keyy << " Valuee: " << value << std::endl;
+    // std::cout << "Key1: " << keyy << " Value1: " << value << std::endl;
     GET_TIMESTAMP(chumma);
 
     int hashindex = (hasho(keyy, keylength) % kvlength + kvlength) % kvlength;
@@ -240,9 +239,6 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     }
     GET_TIMESTAMP(end_latency);
   });
-  // Before starting replication: 374028291709359
-  // 374029080598507
-  // 374029080610431
   // Wait enough time for the consensus to become ready
   std::cout << "Wait some time" << std::endl;
   std::this_thread::sleep_for(std::chrono::seconds(5 + 3 - id));
@@ -275,7 +271,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     // TIMESTAMP_T start_latency, end_latency;
     GET_TIMESTAMP(start_meas);
     // for (int i = 0; i < times; i++) {
-    for (int i = 0; i < times; i++) {
+    for (int i = 0; i < timesread; i++) {
       // Encode process doing the proposal
       GET_TIMESTAMP(timestamps_start[i]);
       dory::ProposeError err;
@@ -356,9 +352,7 @@ void benchmark(int id, std::vector<int> remote_ids, int times, int payload_size,
     for (size_t i = 0; i < timestamps_ranges.size(); i++) {
       auto [last_id, timestamp] = timestamps_ranges[i];
       for (int j = start_range; j < last_id; j++) {
-        // std::cout << i << " " << j << std::endl;
         last_received = timestamp;
-        // std::cout << start_range << " " << last_id << " " << std::endl;
         dump1 << ELAPSED_NSEC(timestamps_start[j], timestamp) << "\n";
       }
 
