@@ -16,8 +16,8 @@
 #include <cstring>
 #include <sstream>
 int kvlength = 500000;  // size of the Key-Value Store
-int keylength = 32;     // in bytes
-int valuelength = 32;
+int keylength;          // in bytes
+int valuelength;
 size_t payloadread = 0;  // length of key + value from workload.txt
 int timesread = 0;       // number of operations to execute
 
