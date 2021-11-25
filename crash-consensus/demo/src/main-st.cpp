@@ -16,7 +16,7 @@
 #include <cstring>
 #include <sstream>
 int kvlength = 500000;  // size of the Key-Value Store
-int keylength;          // in bytes
+int keylength = 64;     // in bytes
 int valuelength;
 size_t payloadread = 0;  // length of key + value from workload.txt
 int timesread = 0;       // number of operations to execute
@@ -74,8 +74,7 @@ int main(int argc, char* argv[]) {
   }
 
   payload_size = atoi(argv[2]);
-  keylength = payload_size / 2;
-  valuelength = payload_size / 2;
+  valuelength = payload_size;
   std::cout << "USING PAYLOAD SIZE = " << payload_size << std::endl;
 
   int outstanding_req = atoi(argv[3]);
